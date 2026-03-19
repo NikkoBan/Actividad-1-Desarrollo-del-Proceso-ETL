@@ -24,12 +24,10 @@ class TraceManager:
         self._logger.setLevel(getattr(logging, log_level.upper(), logging.INFO))
         self._logger.handlers.clear()
 
-        # Handler archivo
         log_file = self._logs_path / "etl.log"
         fh = logging.FileHandler(str(log_file), encoding="utf-8")
         fh.setLevel(logging.DEBUG)
 
-        # Handler consola
         ch = logging.StreamHandler()
         ch.setLevel(getattr(logging, log_level.upper(), logging.INFO))
 
@@ -58,7 +56,6 @@ class TraceManager:
     def debug(self, message: str) -> None:
         self._logger.debug(message)
 
-    # ── Métricas de tiempo ──────────────────────────────────────
     def start_timer(self, label: str) -> None:
         self._timers[label] = time.perf_counter()
         self.info(f"⏱  Inicio: {label}")
@@ -72,14 +69,12 @@ class TraceManager:
         self.info(f"⏱  Fin: {label} → {elapsed:.3f}s")
         return elapsed
 
-    # ── Contadores ──────────────────────────────────────────────
     def increment(self, counter: str, amount: int = 1) -> None:
         self._counters[counter] = self._counters.get(counter, 0) + amount
 
     def get_counter(self, counter: str) -> int:
         return self._counters.get(counter, 0)
 
-    # ── Resumen ─────────────────────────────────────────────────
     def print_summary(self) -> None:
         self.info("=" * 60)
         self.info("📊  RESUMEN DE EJECUCIÓN ETL")

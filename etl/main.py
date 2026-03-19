@@ -28,6 +28,7 @@ from core import (
     DataSinkManager,
     TraceManager,
     DwLoader,
+    OltpLoader,
 )
 
 
@@ -46,6 +47,10 @@ class EtlWorker:
         )
         self._dw = DwLoader(
             self._settings.dw_connection_string,
+            self._trace,
+        )
+        self._oltp = OltpLoader(
+            self._settings.db_connection_string,
             self._trace,
         )
         self._running = True
@@ -141,6 +146,10 @@ class EtlWorker:
                 ],
                 "etl_summary",
             )
+
+            # ── FASE 3.5: CARGA EN OLTP (VentasDB) ─────────────
+            if csv_data:
+                await self._oltp.load_from_csv(csv_data)
 
             # ── FASE 4: Carga al Data Warehouse ────────────────
             self._trace.info("── FASE 4: CARGA AL DATA WAREHOUSE ──")

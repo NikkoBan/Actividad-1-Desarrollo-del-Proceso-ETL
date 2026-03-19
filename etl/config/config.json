@@ -1,0 +1,27 @@
+{
+  "database": {
+    "oltp_connection_string": "Driver={SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=VentasDB;Trusted_Connection=yes;",
+    "dw_connection_string": "Driver={SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=VentasAnalisisDB;Trusted_Connection=yes;"
+  },
+  "api": {
+    "base_url": "https://jsonplaceholder.typicode.com",
+    "endpoints": {
+      "users": "/users",
+      "posts": "/posts",
+      "comments": "/comments"
+    },
+    "retry": {
+      "max_attempts": 3,
+      "delay_seconds": 2
+    }
+  },
+  "paths": {
+    "csv_folder": "./cvs/",
+    "staging_folder": "./staging/",
+    "logs_folder": "./logs/"
+  },
+  "etl": {
+    "batch_size": 1000,
+    "parallel_workers": 4
+  }
+}

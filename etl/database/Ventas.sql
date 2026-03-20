@@ -1,3 +1,5 @@
+
+
 -- =====================================================================
 -- VENTASDB — BASE DE DATOS OPERACIONAL (OLTP)
 -- Motor   : SQL Server — (localdb)\MSSQLLocalDB
@@ -143,3 +145,6 @@ BEGIN
         ON DetalleVentas (ProductoID);
 END
 GO
+
+
+

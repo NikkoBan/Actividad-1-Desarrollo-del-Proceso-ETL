@@ -1,3 +1,5 @@
+
+
 -- =====================================================================
 -- VENTASANALISISDB — BASE DE DATOS ANALÍTICA (DATA WAREHOUSE)
 -- Motor   : SQL Server — (localdb)\MSSQLLocalDB
@@ -653,3 +655,5 @@ GO
 
 PRINT '✅ VentasAnalisisDB (Data Warehouse) creada correctamente.';
 GO
+
+

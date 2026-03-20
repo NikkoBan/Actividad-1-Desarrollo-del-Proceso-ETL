@@ -12,3 +12,4 @@ class Customer:
     phone: str
     city: str
     country: str
+

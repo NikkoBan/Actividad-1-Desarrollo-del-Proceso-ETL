@@ -10,3 +10,4 @@ class OrderDetailDTO(BaseModel):
     total_price: float = Field(..., ge=0, alias="TotalPrice")
 
     model_config = {"populate_by_name": True}
+

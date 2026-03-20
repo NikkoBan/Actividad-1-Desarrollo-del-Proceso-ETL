@@ -9,3 +9,4 @@ class Order:
     customer_id: int
     order_date: str
     status: str
+

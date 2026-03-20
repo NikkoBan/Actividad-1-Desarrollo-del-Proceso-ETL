@@ -29,3 +29,4 @@ class CommentDTO(BaseModel):
     body: str
 
     model_config = {"populate_by_name": True}
+

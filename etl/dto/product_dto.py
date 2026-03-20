@@ -11,3 +11,4 @@ class ProductDTO(BaseModel):
     stock: int = Field(..., ge=0, alias="Stock")
 
     model_config = {"populate_by_name": True}
+

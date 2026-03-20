@@ -13,3 +13,4 @@ class CustomerDTO(BaseModel):
     country: str = Field(..., alias="Country")
 
     model_config = {"populate_by_name": True}
+

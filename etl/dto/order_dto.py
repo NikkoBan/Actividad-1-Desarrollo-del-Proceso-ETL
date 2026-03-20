@@ -10,3 +10,4 @@ class OrderDTO(BaseModel):
     status: str = Field(..., alias="Status")
 
     model_config = {"populate_by_name": True}
+

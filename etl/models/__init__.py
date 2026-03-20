@@ -6,3 +6,4 @@ from .order_detail import OrderDetail
 from .product import Product
 
 __all__ = ["Customer", "Order", "OrderDetail", "Product"]
+

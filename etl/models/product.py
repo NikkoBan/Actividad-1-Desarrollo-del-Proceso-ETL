@@ -10,3 +10,4 @@ class Product:
     category: str
     price: float
     stock: int
+

@@ -20,14 +20,9 @@ import streamlit as st
 import pandas as pd
 import pyodbc
 
-# ── Agregar raíz del proyecto al path para leer config ──────────────
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import Settings
 
-
-# ─────────────────────────────────────────────────────────────────────
-# Conexión al Data Warehouse
-# ─────────────────────────────────────────────────────────────────────
 @st.cache_resource
 def get_connection():
     """Crea una conexión reutilizable al Data Warehouse."""
@@ -40,10 +35,6 @@ def run_query(sql: str) -> pd.DataFrame:
     conn = get_connection()
     return pd.read_sql(sql, conn)
 
-
-# ─────────────────────────────────────────────────────────────────────
-# Configuración de la página
-# ─────────────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Dashboard de Ventas",
     page_icon="📊",
@@ -54,9 +45,6 @@ st.title("📊 Dashboard de Ventas — Data Warehouse")
 st.markdown("Visualización analítica conectada a **VentasAnalisisDB** (modelo estrella).")
 st.divider()
 
-# ─────────────────────────────────────────────────────────────────────
-# KPIs Principales
-# ─────────────────────────────────────────────────────────────────────
 try:
     kpi_df = run_query("""
         SELECT
@@ -79,10 +67,8 @@ try:
 
     st.divider()
 
-    # ── Fila 1: Ventas por Mes  |  Ventas por Categoría ────────────
     col_left, col_right = st.columns(2)
 
-    # ── Ventas por Mes ──────────────────────────────────────────────
     with col_left:
         st.subheader("📅 Ventas por Mes")
         ventas_mes = run_query("""
@@ -105,7 +91,6 @@ try:
         else:
             st.info("Sin datos de ventas por mes.")
 
-    # ── Ventas por Categoría ────────────────────────────────────────
     with col_right:
         st.subheader("🏷️ Ventas por Categoría")
         ventas_cat = run_query("""
@@ -128,10 +113,8 @@ try:
 
     st.divider()
 
-    # ── Fila 2: Top Clientes  |  Ventas por Trimestre ──────────────
     col_left2, col_right2 = st.columns(2)
 
-    # ── Top 10 Clientes ────────────────────────────────────────────
     with col_left2:
         st.subheader("🏆 Top 10 Clientes por Ingreso")
         top_clientes = run_query("""
@@ -152,7 +135,6 @@ try:
         else:
             st.info("Sin datos de clientes.")
 
-    # ── Ventas por Trimestre ───────────────────────────────────────
     with col_right2:
         st.subheader("📊 Ventas por Trimestre")
         ventas_trim = run_query("""
@@ -176,10 +158,8 @@ try:
 
     st.divider()
 
-    # ── Fila 3: Top Productos  |  Ventas Fin de Semana vs Laboral ─
     col_left3, col_right3 = st.columns(2)
 
-    # ── Top 10 Productos ───────────────────────────────────────────
     with col_left3:
         st.subheader("📦 Top 10 Productos Más Vendidos")
         top_prod = run_query("""
@@ -200,7 +180,6 @@ try:
         else:
             st.info("Sin datos de productos.")
 
-    # ── Ventas: Fin de semana vs Laboral ───────────────────────────
     with col_right3:
         st.subheader("📆 Ventas: Laboral vs Fin de Semana")
         ventas_fds = run_query("""
@@ -219,7 +198,6 @@ try:
         else:
             st.info("Sin datos de ventas.")
 
-    # ── Footer ─────────────────────────────────────────────────────
     st.divider()
     st.caption("Dashboard conectado a VentasAnalisisDB — Modelo Estrella (Star Schema)")
 
@@ -233,3 +211,4 @@ except pyodbc.Error as e:
     )
 except Exception as e:
     st.error(f"Error inesperado: {e}")
+

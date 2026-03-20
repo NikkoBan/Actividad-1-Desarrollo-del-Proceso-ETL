@@ -48,3 +48,4 @@ class StgApiComentarioDTO(BaseModel):
     email: str | None = None
     cuerpo: str | None = None
     fuente: str = "API"
+

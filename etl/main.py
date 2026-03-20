@@ -17,7 +17,6 @@ import signal
 import sys
 from pathlib import Path
 
-# Agregar el directorio raíz al path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from config import Settings
@@ -55,7 +54,6 @@ class EtlWorker:
         )
         self._running = True
 
-        # Adaptadores de extracción
         self._extractors = {
             "csv": FlatFileReader(
                 self._settings.csv_folder,
@@ -83,7 +81,7 @@ class EtlWorker:
         self._trace.info("=" * 60)
 
         try:
-            # ── FASE 1: Extracción ──────────────────────────────
+        
             self._trace.info("── FASE 1: EXTRACCIÓN ──")
             extracted_data: dict[str, list] = {}
 
@@ -99,7 +97,7 @@ class EtlWorker:
                     self._trace.error(f"Error en extracción '{name}'", e)
                     extracted_data[name] = []
 
-            # ── FASE 2: Validación / Transformación ─────────────
+        
             self._trace.info("── FASE 2: VALIDACIÓN ──")
             validated_data: dict[str, list] = {}
 
@@ -120,7 +118,6 @@ class EtlWorker:
                 else:
                     validated_data[name] = []
 
-            # ── FASE 3: Carga en archivos staging ───────────────
             self._trace.info("── FASE 3: CARGA EN STAGING (archivos) ──")
 
             csv_data = validated_data.get("csv", [])
@@ -147,14 +144,11 @@ class EtlWorker:
                 "etl_summary",
             )
 
-            # ── FASE 3.5: CARGA EN OLTP (VentasDB) ─────────────
             if csv_data:
                 await self._oltp.load_from_csv(csv_data)
 
-            # ── FASE 4: Carga al Data Warehouse ────────────────
             self._trace.info("── FASE 4: CARGA AL DATA WAREHOUSE ──")
 
-            # Clasificar CSV por archivo fuente para staging DB
             csv_by_file = self._group_by_key(csv_data, "_source_file")
 
             for file_key, records in csv_by_file.items():
@@ -168,13 +162,11 @@ class EtlWorker:
                 elif "order" in lower:
                     await self._dw.load_staging_ventas(records, "CSV")
 
-            # Cargar comentarios de la API
             if api_data:
                 comments = [r for r in api_data if r.get("_source_endpoint", "") == "comments"]
                 if comments:
                     await self._dw.load_staging_api_comentarios(comments)
 
-            # Ejecutar SP que transforma staging → dimensiones → hechos
             await self._dw.execute_etl_to_dw()
 
         except Exception as e:
